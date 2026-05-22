@@ -1,0 +1,10 @@
+Package: tooey
+Title: What the Package Does (One line, Title case)
+Version: 0.0.0.9000
+Authors@R:
+	person('First', 'Last', email = 'first.last@example.com', role = c('aut', 'cre'))
+Description: What the package does (one paragraph).
+License: What license it uses
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0
