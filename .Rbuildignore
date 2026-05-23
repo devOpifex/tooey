@@ -1,2 +1,5 @@
 ^srcr/
 ^builder.ini
+^\.ignore$
+^recipes$
+^LICENSE\.md$

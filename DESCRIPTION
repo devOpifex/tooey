@@ -1,10 +1,18 @@
 Package: tooey
-Title: What the Package Does (One line, Title case)
+Title: 'TUI' in R
 Version: 0.0.0.9000
-Authors@R:
-	person('First', 'Last', email = 'first.last@example.com', role = c('aut', 'cre'))
-Description: What the package does (one paragraph).
-License: What license it uses
+Authors@R: 
+  c(
+    person(given = "John",
+           family = "Coene",
+           role = c("aut", "cre"),
+           email = "jcoenep@gmail.com"),
+    person(family = "Opifex",
+           role = c("cph", "fnd"),
+           email = "john@opifex.org")
+  )
+Description: Create 'TUI' applications in R.
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
