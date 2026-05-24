@@ -4,5 +4,5 @@
 #'
 #' @export
 t_clear_screen <- function() {
-  cat("\x1b[2J")
+  e("2J")
 }
