@@ -11,8 +11,21 @@ Authors@R:
            role = c("cph", "fnd"),
            email = "john@opifex.org")
   )
+Imports:
+  S7
 Description: Create 'TUI' applications in R.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
+Collate:
+  'aaa.R'
+  'buffer.R'
+  'core.R'
+  'clear.R'
+  'cmds-line.R'
+  'cmds-quit.R'
+  'poll.R'
+  'raw.R'
+  'utils-core.R'
+  'utils-screen.R'

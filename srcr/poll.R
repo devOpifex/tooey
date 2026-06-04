@@ -1,4 +1,7 @@
-t_poll <- function(timeout_ms = 16) {
+t_poll <- S7::new_generic("t_poll", "x")
+
+#' @export
+S7::method(t_poll, Tooey) <- function(x, timeout_ms = 1000) {
   deadline <- Sys.time() + timeout_ms / 1000
   con <- file("stdin", "rb", blocking = FALSE)
   on.exit(close(con), add = TRUE)
@@ -10,10 +13,10 @@ t_poll <- function(timeout_ms = 16) {
     }
 
     if (length(bytes) && rawToChar(bytes) == "q") {
-      p("\x1b[5;10H\x1b[31mquitting...\x1b[0m\n")
+      p("\x1b[1;1H\x1b[31mquitting...\x1b[0m\n")
       t_q()
     }
 
-    Sys.sleep(0.005) # 5ms — tradeoff between responsiveness and CPU
+    Sys.sleep(0.005)
   }
 }
