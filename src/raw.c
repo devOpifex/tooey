@@ -2,16 +2,19 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include <R.h>
+#include <Rinternals.h>
+
 struct termios orig_termios;
 
 void disable_raw_mode() {
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
 }
 
-void enable_raw_mode(int auto_disable) {
+SEXP enable_raw_mode(SEXP auto_disable) {
   tcgetattr(STDIN_FILENO, &orig_termios);
 
-  if(auto_disable) {
+  if(asLogical(auto_disable)) {
     atexit(disable_raw_mode);
   }
 
@@ -24,4 +27,6 @@ void enable_raw_mode(int auto_disable) {
   raw.c_cc[VTIME] = 1;
 
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+
+  return R_NilValue;
 }

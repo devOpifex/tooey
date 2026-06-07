@@ -40,8 +40,14 @@ t_sgr <- function(fg, bg, attrs) {
 
 #' @export
 S7::method(render, Tooey) <- function(x) {
-  con <- file("/dev/stdout", "wb", blocking = FALSE)
-  on.exit(close(con), add = TRUE)
+  con <- file("stdout", "wb", blocking = FALSE)
+  on.exit(
+    {
+      close(con)
+      unlink("stdout")
+    },
+    add = TRUE
+  )
 
   out <- character(0)
   for (i in seq_len(x@front@rows)) {
