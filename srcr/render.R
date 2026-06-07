@@ -40,14 +40,7 @@ t_sgr <- function(fg, bg, attrs) {
 
 #' @export
 S7::method(render, Tooey) <- function(x) {
-  con <- file("stdout", "wb", blocking = FALSE)
-  on.exit(
-    {
-      close(con)
-      unlink("stdout")
-    },
-    add = TRUE
-  )
+  con <- stdout()
 
   out <- character(0)
   for (i in seq_len(x@front@rows)) {
@@ -70,6 +63,6 @@ S7::method(render, Tooey) <- function(x) {
     }
   }
 
-  writeBin(charToRaw(paste0(out, collapse = "")), con)
+  cat(paste0(out, collapse = ""), con)
   flush(con)
 }
