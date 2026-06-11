@@ -56,10 +56,10 @@ S7::method(render, Tooey) <- function(x) {
 
       sgr <- t_sgr(fg, bg, attrs)
       if (nzchar(sgr)) {
-        out <- c(out, sgr, char, "\x1b[0m")
-      } else {
-        out <- c(out, char)
+        char <- c(sgr, char, "\x1b[0m")
       }
+      x@back[i, j] <- char
+      out <- c(out, char)
     }
   }
 
