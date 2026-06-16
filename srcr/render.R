@@ -68,14 +68,14 @@ S7::method(render, Tooey) <- function(x) {
   # changed and the whole screen is drawn.
   changed <- which(is.na(x@back) | new_frame != x@back, arr.ind = TRUE)
 
-  if (nrow(changed)) {
-    out <- character(0)
-    for (k in seq_len(nrow(changed))) {
+  n <- nrow(changed)
+  if (n) {
+    out <- character(2L * n)
+    for (k in seq_len(n)) {
       i <- changed[k, 1L]
       j <- changed[k, 2L]
-      # Move the cursor to this cell (rows/cols are 1-based, matching the
-      # matrix) and write only that cell.
-      out <- c(out, sprintf("\x1b[%d;%dH", i, j), new_frame[i, j])
+      out[2L * k - 1L] <- sprintf("\x1b[%d;%dH", i, j)
+      out[2L * k] <- new_frame[i, j]
     }
 
     cat(paste0(out, collapse = ""), file = con)
