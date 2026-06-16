@@ -37,11 +37,12 @@ t_sgr <- function(fg, bg, attrs) {
 #' @export
 S7::method(render, Tooey) <- function(x) {
   con <- stdout()
-  out <- character(0)
+  # Render every front-buffer cell down to the exact string we would emit to
+  # the terminal (SGR styling + glyph + reset). Keeping the full escaped cell
+  # here means the diff below catches colour and attribute changes, not just
+  # changes to the visible character.
+  new_frame <- matrix(NA_character_, nrow = x@nrows, ncol = x@ncols)
   for (i in seq_len(x@front@rows)) {
-    # Position the cursor at the start of this row so each frame overwrites
-    # the previous one in place instead of scrolling.
-    out <- c(out, sprintf("\x1b[%d;1H", i))
     for (j in seq_len(x@front@cols)) {
       char <- x@front@characters[i, j]
       fg <- x@front@foreground[i, j]
@@ -49,12 +50,30 @@ S7::method(render, Tooey) <- function(x) {
       attrs <- x@front@attributes[i, j]
       sgr <- t_sgr(fg, bg, attrs)
       if (nzchar(sgr)) {
-        out <- c(out, sgr, char, "\x1b[0m")
-      } else {
-        out <- c(out, char)
+        char <- paste0(sgr, char, "\x1b[0m")
       }
+      new_frame[i, j] <- char
     }
   }
-  cat(paste0(out, collapse = ""), con)
-  flush(con)
+  # Diff against what is already on screen (`back`). Only cells that differ get
+  # rewritten. On the first frame `back` is all NA, so every cell counts as
+  # changed and the whole screen is drawn.
+  changed <- which(is.na(x@back) | new_frame != x@back, arr.ind = TRUE)
+  if (nrow(changed)) {
+    out <- character(0)
+    for (k in seq_len(nrow(changed))) {
+      i <- changed[k, 1L]
+      j <- changed[k, 2L]
+      # Move the cursor to this cell (rows/cols are 1-based, matching the
+      # matrix) and write only that cell.
+      out <- c(out, sprintf("\x1b[%d;%dH", i, j), new_frame[i, j])
+    }
+    cat(paste0(out, collapse = ""), file = con)
+    flush(con)
+  }
+  # The new frame is now what's on screen: remember it for the next diff and
+  # reset the front buffer so the next update starts from a clean slate.
+  x@back <- new_frame
+  x@front <- Buffer(rows = x@nrows, cols = x@ncols)
+  invisible(x)
 }
