@@ -1,8 +1,17 @@
+#' Create a Tooey application
+#'
+#' @param model Initial application state (a list).
+#' @param init Function `(model) -> cmd`; a startup command, or `NULL`.
+#' @param update Function `(model, msg) -> list(model = , cmd = )`.
+#' @param view Function `(model, buf) -> buf`; draws the model into `buf`.
+#'
+#' @export
 Tooey <- S7::new_class(
   "Tooey",
   package = "tooey",
   properties = list(
     model = S7::class_list,
+    init = S7::class_function,
     update = S7::class_function,
     view = S7::class_function,
     back = S7::class_atomic,
@@ -10,7 +19,12 @@ Tooey <- S7::new_class(
     nrows = S7::class_integer,
     ncols = S7::class_integer
   ),
-  constructor = function(model = list()) {
+  constructor = function(
+    model = list(),
+    init = function(model) NULL,
+    update = function(model, msg) list(model = model, cmd = NULL),
+    view = function(model, buf) buf
+  ) {
     # get_screen_dimensions() returns c(cols, rows); name them so the buffer
     # dimensions don't get transposed.
     dims <- get_screen_dimensions()
@@ -19,13 +33,14 @@ Tooey <- S7::new_class(
 
     S7::new_object(
       S7::S7_object(),
+      model = model,
+      init = init,
+      update = update,
+      view = view,
       back = matrix(NA_character_, nrow = rows, ncol = cols),
       front = Buffer(rows = rows, cols = cols),
-      model = model,
       nrows = rows,
-      ncols = cols,
-      update = \(x) x,
-      view = \() {}
+      ncols = cols
     )
   }
 )

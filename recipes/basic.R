@@ -1,11 +1,23 @@
 devtools::load_all()
 
-i <- 0L
+init <- function(model) cmd_tick(1 / 30) # startup: begin the clock
 
-t <- Tooey()
-t <- update(t, \(t) {
-  i <<- i + 1L
-  t <- t_text(t, sprintf("Frame %d", i))
-  t
-})
+update <- function(model, msg) {
+  if (is_key(msg, "q")) {
+    return(list(model = model, cmd = cmd_quit()))
+  }
+  if (is_tick(msg)) {
+    model$frame <- model$frame + 1L
+    return(list(model = model, cmd = cmd_tick(1 / 30))) # schedule next tick
+  }
+  list(model = model, cmd = NULL)
+}
+
+view <- function(model, buf) {
+  buf <- t_text(buf, sprintf("Frame %d", model$frame), row = 1, col = 1)
+  buf <- t_text(buf, "press q to quit", row = 3, col = 1, fg = "cyan")
+  buf
+}
+
+t <- Tooey(model = list(frame = 0L), init = init, update = update, view = view)
 run(t)

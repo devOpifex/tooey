@@ -11,6 +11,13 @@ void disable_raw_mode() {
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
 }
 
+// .Call-able wrapper around disable_raw_mode(), which itself stays
+// void-returning so it can serve as the atexit() callback.
+SEXP disable_raw_mode_() {
+  disable_raw_mode();
+  return R_NilValue;
+}
+
 SEXP enable_raw_mode(SEXP auto_disable) {
   tcgetattr(STDIN_FILENO, &orig_termios);
 

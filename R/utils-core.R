@@ -8,3 +8,7 @@ e <- function(...) {
     }) |>
     p()
 }
+# Current time in seconds, for tick scheduling.
+t_now <- function() {
+  as.numeric(Sys.time())
+}

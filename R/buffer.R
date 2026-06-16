@@ -1,3 +1,12 @@
+#' A screen buffer
+#'
+#' A grid of character cells, each with its own foreground colour, background
+#' colour, and attributes. Drawing commands such as [t_text()] write into a
+#' `Buffer`, and [render()] diffs it against what is currently on screen.
+#'
+#' @param rows,cols Buffer dimensions, in character cells.
+#'
+#' @export
 Buffer <- S7::new_class(
   "Buffer",
   properties = list(

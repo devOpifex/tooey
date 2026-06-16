@@ -1,3 +1,12 @@
+#' Render a frame
+#'
+#' Builds the next frame from the front buffer, diffs it against what is
+#' already on screen, and writes only the cells that changed.
+#'
+#' @param x A `Tooey` object.
+#' @param ... Passed to methods.
+#'
+#' @export
 render <- S7::new_generic("render", "x")
 
 # Basic 8-colour palette mapped to their ANSI SGR offsets.
@@ -38,7 +47,6 @@ t_sgr <- function(fg, bg, attrs) {
   sprintf("\x1b[%sm", paste(codes, collapse = ";"))
 }
 
-#' @export
 S7::method(render, Tooey) <- function(x) {
   con <- stdout()
 
