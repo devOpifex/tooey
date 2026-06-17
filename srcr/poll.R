@@ -63,10 +63,15 @@ S7::method(t_poll, Tooey) <- function(x) {
 
     # Collect pending messages: keyboard input first, then a tick if due.
     queue <- list()
+    interrupt <- FALSE
 
     bytes <- readBin(con, "raw", n = 16)
     if (length(bytes)) {
-      queue[[length(queue) + 1L]] <- KeyMsg(key = t_parse_key(bytes))
+      key <- t_parse_key(bytes)
+      queue[[length(queue) + 1L]] <- KeyMsg(key = key)
+      # Ctrl-C is a runtime-level escape hatch: dispatch it so `update` can
+      # observe it, render the resulting frame, then quit no matter what.
+      interrupt <- identical(key, "ctrl-c")
     }
 
     if (t_now() >= next_tick) {
@@ -84,6 +89,10 @@ S7::method(t_poll, Tooey) <- function(x) {
         x@front <- x@view(model, Buffer(rows = x@nrows, cols = x@ncols))
         x <- render(x)
       }
+    }
+
+    if (interrupt) {
+      quit <- TRUE
     }
 
     Sys.sleep(0.005)
