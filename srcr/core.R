@@ -44,3 +44,15 @@ Tooey <- S7::new_class(
     )
   }
 )
+
+# Resize the runtime's buffers to new terminal dimensions. The back buffer is
+# reset to all-NA so the next render() treats every cell as changed and repaints
+# the whole screen at the new size.
+t_resize <- S7::new_generic("t_resize", "x")
+S7::method(t_resize, Tooey) <- function(x, cols, rows) {
+  x@ncols <- cols
+  x@nrows <- rows
+  x@front <- Buffer(rows = rows, cols = cols)
+  x@back <- matrix(NA_character_, nrow = rows, ncol = cols)
+  x
+}

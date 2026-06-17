@@ -4,17 +4,24 @@
 \alias{messages}
 \alias{KeyMsg}
 \alias{TickMsg}
+\alias{WindowSizeMsg}
 \title{Messages}
 \usage{
 KeyMsg(key = character(0))
 
 TickMsg()
+
+WindowSizeMsg(width = integer(0), height = integer(0))
 }
 \arguments{
 \item{key}{The key name, e.g. \code{"q"}, \code{"up"}, or \code{"enter"}.}
+
+\item{width, height}{Terminal dimensions, in character cells.}
 }
 \description{
 Messages are the values the runtime feeds to a \code{Tooey}'s \code{update} function.
 A \code{KeyMsg} is emitted for a keypress; a \code{TickMsg} is emitted when a
-\code{\link[=cmd_tick]{cmd_tick()}} fires. Match them with \code{\link[=is_key]{is_key()}} and \code{\link[=is_tick]{is_tick()}}.
+\code{\link[=cmd_tick]{cmd_tick()}} fires; a \code{WindowSizeMsg} is emitted once at startup and again
+whenever the terminal is resized. Match them with \code{\link[=is_key]{is_key()}}, \code{\link[=is_tick]{is_tick()}},
+and \code{\link[=is_resize]{is_resize()}}.
 }

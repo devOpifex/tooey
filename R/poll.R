@@ -34,7 +34,8 @@ S7::method(t_poll, Tooey) <- function(x) {
     list(model = model, changed = changed)
   }
   # Run the startup command, dispatching any messages it produces, then draw
-  # the initial frame once.
+  # the initial frame once. An initial WindowSizeMsg goes first, so `view`
+  # always has the terminal dimensions before the app's own startup messages.
   eff <- t_run_cmd(x@init(model))
   if (eff$quit) {
     quit <- TRUE
@@ -42,9 +43,11 @@ S7::method(t_poll, Tooey) <- function(x) {
   if (!is.null(eff$tick)) {
     next_tick <- t_now() + eff$tick
   }
-  if (length(eff$msgs)) {
-    model <- dispatch(model, eff$msgs)$model
-  }
+  startup <- c(
+    list(WindowSizeMsg(width = x@ncols, height = x@nrows)),
+    eff$msgs
+  )
+  model <- dispatch(model, startup)$model
   x@model <- model
   x@front <- x@view(model, Buffer(rows = x@nrows, cols = x@ncols))
   x <- render(x)
@@ -66,6 +69,13 @@ S7::method(t_poll, Tooey) <- function(x) {
     if (t_now() >= next_tick) {
       queue[[length(queue) + 1L]] <- TickMsg()
       next_tick <- Inf
+    }
+    # Poll the terminal size (a cheap ioctl). On change, resize the buffers and
+    # tell the app, so `view` can re-lay-out and render() repaints in full.
+    dims <- get_screen_dimensions()
+    if (dims[1] != x@ncols || dims[2] != x@nrows) {
+      x <- t_resize(x, cols = dims[1], rows = dims[2])
+      queue[[length(queue) + 1L]] <- WindowSizeMsg(width = x@ncols, height = x@nrows)
     }
     # Fold every message through update, then draw once. With no messages we
     # skip view/render entirely, so an idle app costs nothing.
