@@ -22,10 +22,26 @@ S7::method(t_poll, Tooey) <- function(x) {
       i <- i + 1L
 
       res <- x@update(model, msg)
-      model <- res$model
-      changed <- TRUE
 
-      eff <- t_run_cmd(res$cmd)
+      changed <- TRUE
+      cmd <- NULL
+      model <- NULL
+
+      # update() may return WithCmd, a Cmd, or the model.
+      if (is_with_cmd(res)) {
+        model <- res@model
+        cmd <- res@cmd
+      }
+
+      if (is_cmd(res)) {
+        cmd <- res
+      }
+
+      if (is.list(res)) {
+        model <- res$model
+      }
+
+      eff <- t_run_cmd(cmd)
       if (eff$quit) {
         quit <<- TRUE
       }
@@ -87,7 +103,10 @@ S7::method(t_poll, Tooey) <- function(x) {
     dims <- get_screen_dimensions()
     if (dims[1] != x@ncols || dims[2] != x@nrows) {
       x <- t_resize(x, cols = dims[1], rows = dims[2])
-      queue[[length(queue) + 1L]] <- WindowSizeMsg(width = x@ncols, height = x@nrows)
+      queue[[length(queue) + 1L]] <- WindowSizeMsg(
+        width = x@ncols,
+        height = x@nrows
+      )
     }
 
     # Fold every message through update, then draw once. With no messages we

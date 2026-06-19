@@ -128,3 +128,24 @@ S7::method(t_run_cmd, BatchCmd) <- function(cmd) {
   }
   eff
 }
+WithCmd <- S7::new_class(
+  "WithCmd",
+  package = "tooey",
+  properties = list(
+    model = S7::class_list,
+    cmd = S7::new_union(Cmd, NULL)
+  )
+)
+with_cmd <- S7::new_generic("with_cmd", c("model", "cmd"))
+S7::method(with_cmd, list(S7::class_list, Cmd)) <- function(model, cmd) {
+  WithCmd(model = model, cmd = cmd)
+}
+S7::method(with_cmd, list(S7::class_list, NULL)) <- function(model, cmd) {
+  WithCmd(model = model, cmd = cmd)
+}
+is_with_cmd <- function(x) {
+  S7::S7_inherits(x, WithCmd)
+}
+is_cmd <- function(x) {
+  S7::S7_inherits(x, Cmd)
+}

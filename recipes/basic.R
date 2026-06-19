@@ -4,13 +4,13 @@ init <- function(model) cmd_tick(1 / 30) # startup: begin the clock
 
 update <- function(model, msg) {
   if (is_key(msg, "q")) {
-    return(list(model = model, cmd = cmd_quit()))
+    return(with_cmd(model, cmd_quit()))
   }
   if (is_tick(msg)) {
     model$frame <- model$frame + 1L
-    return(list(model = model, cmd = cmd_tick(1 / 30))) # schedule next tick
+    return(with_cmd(model = model, cmd = cmd_tick(1 / 30))) # schedule next tick
   }
-  list(model = model, cmd = NULL)
+  with_cmd(model = model, cmd = NULL)
 }
 
 view <- function(model, buf) {
