@@ -64,9 +64,16 @@ S7::method(render, Tooey) <- function(x) {
     }
   }
   # Diff against what is already on screen (`back`). Only cells that differ get
-  # rewritten. On the first frame `back` is all NA, so every cell counts as
-  # changed and the whole screen is drawn.
-  changed <- which(is.na(x@back) | new_frame != x@back, arr.ind = TRUE)
+  # rewritten. The app always draws onto a freshly-cleared (blank) screen, so an
+  # unknown (NA) back cell is really a blank space. Treating it as " " means the
+  # first frame only emits the non-blank cells it actually draws, instead of
+  # cursor-addressing every one of the rows*cols cells. That full repaint is a
+  # huge single write (~tens of KB) which overflows the (non-blocking) terminal
+  # and leaves the tail of the frame undrawn -- and because later frames only
+  # emit diffs, those dropped cells are never repainted.
+  prev <- x@back
+  prev[is.na(prev)] <- " "
+  changed <- which(new_frame != prev, arr.ind = TRUE)
   n <- nrow(changed)
   if (n) {
     out <- character(2L * n)

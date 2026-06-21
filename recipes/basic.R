@@ -1,6 +1,6 @@
 devtools::load_all()
 
-init <- function(model) cmd_tick(1 / 30) # startup: begin the clock
+init <- function(model) cmd_tick(1 / 30)
 
 update <- function(model, msg) {
   if (is_key(msg, "q")) {

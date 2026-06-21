@@ -103,6 +103,10 @@ S7::method(t_poll, Tooey) <- function(x) {
     dims <- get_screen_dimensions()
     if (dims[1] != x@ncols || dims[2] != x@nrows) {
       x <- t_resize(x, cols = dims[1], rows = dims[2])
+      # render() no longer paints blank cells, so clear the old (now wrongly
+      # sized) frame ourselves; t_resize has reset `back` to NA, matching the
+      # blank screen the next render draws onto.
+      t_clear_screen()
       queue[[length(queue) + 1L]] <- WindowSizeMsg(
         width = x@ncols,
         height = x@nrows
