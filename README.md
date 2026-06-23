@@ -5,8 +5,7 @@
 
 Terminal User Interface (TUI) framework for R.
 
-:warning: This package is still in development.
-The code is written by hand, an LLM was used for the input parser.
+Disclosure: the code is written by hand, an LLM was used for the input parser.
 
 ## Installation
 
