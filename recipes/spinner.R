@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 devtools::load_all()
 
 frames <- c("⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏")
@@ -17,7 +18,13 @@ update <- function(model, msg) {
 
 view <- function(model, buf) {
   glyph <- model$frames[(model$frame %% length(model$frames)) + 1L]
-  buf <- t_text(buf, sprintf("%s Working...", glyph), row = 1, col = 1, fg = "magenta")
+  buf <- t_text(
+    buf,
+    sprintf("%s Working...", glyph),
+    row = 1,
+    col = 1,
+    fg = "magenta"
+  )
   t_text(buf, "press q to quit", row = 3, col = 1, fg = "cyan")
 }
 

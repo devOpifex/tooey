@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 devtools::load_all()
 
 # An interactive checklist, built entirely from the loop + key parser (no

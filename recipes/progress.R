@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 devtools::load_all()
 
 init <- function(model) cmd_tick(1 / 30)

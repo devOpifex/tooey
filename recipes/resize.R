@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 devtools::load_all()
 
 # Displays the current terminal size and updates live as you resize the window.
@@ -32,7 +33,13 @@ view <- function(model, buf) {
     col = 1,
     fg = "yellow"
   )
-  t_text(buf, "resize the window; press q to quit", row = 4, col = 1, fg = "cyan")
+  t_text(
+    buf,
+    "resize the window; press q to quit",
+    row = 4,
+    col = 1,
+    fg = "cyan"
+  )
 }
 
 t <- Tooey(

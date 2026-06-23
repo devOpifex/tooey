@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 devtools::load_all()
 
 items <- c("About", "Settings", "Quit")
@@ -49,7 +50,13 @@ view_menu <- function(model, buf) {
       buf <- t_text(buf, line, row = 1L + i, col = 1)
     }
   }
-  t_text(buf, "up/down move - enter select - ctrl-c quit", row = 3L + length(model$items), col = 1, fg = "cyan")
+  t_text(
+    buf,
+    "up/down move - enter select - ctrl-c quit",
+    row = 3L + length(model$items),
+    col = 1,
+    fg = "cyan"
+  )
 }
 
 view <- function(model, buf) {

@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 devtools::load_all()
 
 init <- function(model) NULL
@@ -26,7 +27,13 @@ view <- function(model, buf) {
   buf <- t_text(buf, "Type something:", row = 1, col = 1, fg = "magenta")
   buf <- t_text(buf, paste0(model$text, "_"), row = 2, col = 1, fg = "yellow")
   if (nzchar(model$submitted)) {
-    buf <- t_text(buf, sprintf("You said: %s", model$submitted), row = 4, col = 1, fg = "green")
+    buf <- t_text(
+      buf,
+      sprintf("You said: %s", model$submitted),
+      row = 4,
+      col = 1,
+      fg = "green"
+    )
   }
   t_text(buf, "enter submit - esc quit", row = 6, col = 1, fg = "cyan")
 }
