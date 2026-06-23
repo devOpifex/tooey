@@ -7,6 +7,8 @@ Terminal User Interface (TUI) framework for R.
 
 Disclosure: the code is written by hand, an LLM was used for the input parser.
 
+![](demo.gif)
+
 ## Installation
 
 ``` r
