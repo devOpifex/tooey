@@ -21,6 +21,7 @@ pak::pak("devOpifex/tooey")
 See `recipes/` for more examples.
 
 ``` r
+#! /usr/bin/env Rscript
 library(tooey)
 
 init <- function(model) cmd_tick(1 / 30)
