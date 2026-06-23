@@ -7,7 +7,7 @@ Terminal User Interface (TUI) framework for R.
 
 Disclosure: the code is written by hand, an LLM was used for the input parser.
 
-[![asciicast](https://asciinema.org/a/S98DEPl784kqtOTU.svg)](https://asciinema.org/a/S98DEPl784kqtOTU)
+<script src="https://asciinema.org/a/S98DEPl784kqtOTU.js" id="asciicast-S98DEPl784kqtOTU" async="true"></script>
 
 ## Installation
 
