@@ -5,7 +5,7 @@
 
 Terminal User Interface (TUI) framework for R.
 
-Disclosure: the code is written by hand, an LLM was used for the input parser.
+Disclosure: the code is written by a human, but an LLM was used for the input parser.
 
 ![](demo.gif)
 
