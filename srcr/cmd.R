@@ -156,6 +156,19 @@ WithCmd <- S7::new_class(
   )
 )
 
+#' Model with a command
+#'
+#' A model with a command and a command to execute.
+#'
+#' @param model A model.
+#' @param cmd A command.
+#' @param ... Passed to methods.
+#'
+#' @name with_cmd
+NULL
+
+#' @rdname with_cmd
+#' @export
 with_cmd <- S7::new_generic("with_cmd", c("model", "cmd"))
 
 S7::method(with_cmd, list(S7::class_list, Cmd)) <- function(model, cmd) {

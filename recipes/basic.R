@@ -1,5 +1,5 @@
 #! /usr/bin/env Rscript
-devtools::load_all()
+library(tooey)
 
 init <- function(model) cmd_tick(1 / 30)
 

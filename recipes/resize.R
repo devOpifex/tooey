@@ -1,5 +1,5 @@
 #! /usr/bin/env Rscript
-devtools::load_all()
+library(tooey)
 
 # Displays the current terminal size and updates live as you resize the window.
 # Press q (or Ctrl-C) to quit.

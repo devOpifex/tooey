@@ -1,5 +1,5 @@
 #! /usr/bin/env Rscript
-devtools::load_all()
+library(tooey)
 
 # An interactive checklist, built entirely from the loop + key parser (no
 # widgets). Move with up/down or j/k, jump with home/end, toggle an item with

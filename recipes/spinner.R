@@ -1,5 +1,5 @@
 #! /usr/bin/env Rscript
-devtools::load_all()
+library(tooey)
 
 frames <- c("⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏")
 
